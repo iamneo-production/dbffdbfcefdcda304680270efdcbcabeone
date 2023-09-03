@@ -74,5 +74,6 @@ function checkWin() {
                                                                                                                                       cells.forEach(cell => {
                                                                                                                                           cell.textContent = "";
                                                                                                                                               cell.classList.remove("X", "O");
-                                                                                                                                                });
-                                                                                                                                              }
+                                                                                                                                                }
+                                                                                                                                                );
+                                                                                                                                              };
