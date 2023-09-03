@@ -33,7 +33,7 @@ function handleMove(cell, index) {
     if (!gameOver && board[index] === '') {
         board[index] = currentPlayer;
         cell.textContent = currentPlayer;
-        
+
         const winner = checkWinner();
         if (winner) {
             gameOver = true;
