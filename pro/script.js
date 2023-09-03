@@ -72,9 +72,8 @@ function checkWin() {
                                                                                                                                   const resetButton = document.querySelector("#reset-button");
                                                                                                                                     resetButton.disabled = true;
                                                                                                                                       cells.forEach(cell => {
-                                                                                                                                          cell.textContent = "";
-                                                                                                                                              cell.classList.remove("X", "O");
-                                                                                                                                                }
-                                                                                                                                                )
-                                                                                                                                              );
-                                                                                                                                              }
+                                                                                                                                          cell.textContent='';
+                                                                                                                                      });
+                                                                                                                                    });
+                                                                                                                                      
+                                                                                                
