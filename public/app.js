@@ -1,74 +1,60 @@
-// Tic Tac Toe Game Logic
-
-// Initialize variables
+// Initial game state
+let cells = ['', '', '', '', '', '', '', '', ''];
 let currentPlayer = 'X';
-let board = ['', '', '', '', '', '', '', '', ''];
-let gameOver = false;
 
-// Function to check if there's a winner
-function checkWinner() {
-    const winPatterns = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-        [0, 4, 8], [2, 4, 6] // Diagonals
-    ];
+let result = document.querySelector('.result');
+let btns = document.querySelectorAll('.btn');
 
-    for (const pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-            return board[a];
+let conditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+];
+
+// Function to handle player moves
+const ticTacToe = (element, index) => {
+    if (cells[index] === '' && !isGameOver()) {
+        cells[index] = currentPlayer;
+        element.textContent = currentPlayer;
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        updateResult();
+    }
+};
+
+// Function to check for a win or draw
+const isGameOver = () => {
+    for (let condition of conditions) {
+        const [a, b, c] = condition;
+        if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
+            result.textContent = `Player ${cells[a]} wins!`;
+            return true;
         }
     }
 
-    if (!board.includes('')) {
-        gameOver = true; // It's a draw
-        return 'draw';
+    if (cells.every(cell => cell !== '')) {
+        result.textContent = "It's a draw!";
+        return true;
     }
 
-    return null; // No winner yet
-}
+    return false;
+};
 
-// Function to handle a player's move
-function handleMove(cell, index) {
-    if (!gameOver && board[index] === '') {
-        board[index] = currentPlayer;
-        cell.textContent = currentPlayer;
-
-        const winner = checkWinner();
-        if (winner) {
-            gameOver = true;
-            if (winner === 'draw') {
-                setMessage('It\'s a draw!');
-            } else {
-                setMessage(`Player ${winner} wins!`);
-            }
-        } else {
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            setMessage(`Player ${currentPlayer}'s Turn`);
-        }
+// Function to update the result
+const updateResult = () => {
+    if (!isGameOver()) {
+        result.textContent = `Player ${currentPlayer}'s Turn`;
     }
-}
+};
 
-// Function to display a message
-function setMessage(message) {
-    document.getElementById('message').textContent = message;
-}
-
-// Event listeners for each cell
-const cells = document.querySelectorAll('.cell');
-cells.forEach((cell, index) => {
-    cell.addEventListener('click', () => {
-        handleMove(cell, index);
-    });
+// Add click event listeners to buttons
+btns.forEach((btn, index) => {
+    btn.addEventListener('click', () => ticTacToe(btn, index));
 });
 
-// Reset button click event
-document.getElementById('reset-button').addEventListener('click', () => {
-    currentPlayer = 'X';
-    board = ['', '', '', '', '', '', '', '', ''];
-    gameOver = false;
-    setMessage(`Player ${currentPlayer}'s Turn`);
-    cells.forEach(cell => {
-        cell.textContent = '';
-    });
-});
+// Initialize the game
+updateResult();
