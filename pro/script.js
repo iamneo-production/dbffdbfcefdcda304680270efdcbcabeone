@@ -1,4 +1,3 @@
-// Variables to track game state
 let currentPlayer = "X";
 let gameEnded = false;
 
