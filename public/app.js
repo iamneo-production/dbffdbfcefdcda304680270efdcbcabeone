@@ -1,89 +1,74 @@
-// Initial game state
-let cells = ['', '', '', '', '', '', '', '', ''];
-let currentPlayer = 'X';
-let result = document.querySelector('.result');
-let btns = document.querySelectorAll('.btn');
-let conditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-];
-function handleCellClick() {
-    if (!gameEnded && this.textContent === "") {
-      this.textContent = currentPlayer;
-      this.classList.add(currentPlayer);
-      checkWin();
-      togglePlayer();
-    }
-  }
-  
-  // Function to toggle between players
-  function togglePlayer() {
-    currentPlayer = currentPlayer === "X" ? "O" : "X";
-    const resultText = document.querySelector(".result-text");
-    resultText.textContent = `Player ${currentPlayer}'s Turn`;
-  }
-  
-  // Function to check for a win
-  function checkWin() {
-    const winningCombinations = [
-      [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-      [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-      [0, 4, 8], [2, 4, 6] // Diagonals
-    ];
-  
-    for (let combination of winningCombinations) {
-      const [a, b, c] = combination;
-      if (
-        cells[a].textContent === ```javascript
-                                                              if (
-                                                                    cells[a].textContent === currentPlayer &&
-                                                                          cells[b].textContent === currentPlayer &&
-                                                                                cells[c].textContent === currentPlayer
-                                                                                    ) {
-                                                                                          endGame("Player ${ currentPlayer } wins!);
-                                                                                                break;
-                                                                                                    }
-                                                                                                      }
-  
-                                                                                                        if (!gameEnded && Array.from(cells).every(cell => cell.textContent !== "")) {
-                                                                                                            endGame("It's a draw!");
-                                                                                                              }
-                                                                                                              }
-  
-                                                                                                              // Function to end the game
-                                                                                                              function endGame(result) {
-                                                                                                                gameEnded = true;
-                                                                                                                  const resultText = document.querySelector(".result-text");
-                                                                                                                    resultText.textContent = result;
-                                                                                                                      const resetButton = document.querySelector("#reset-button");
-                                                                                                                        resetButton.disabled = false;
-                                                                                                                          resetButton.addEventListener("click", resetGame);
-                                                                                                                          }
-  
-                                                                                                                    
-                                                                                                                          function resetGame() {
-                                                                                                                            currentPlayer = "X";
-                                                                                                                              gameEnded = false;
-                                                                                                                                const resultText = document.querySelector(".result-text");
-                                                                                                                                  resultText.textContent = "Player 1's Turn";
-                                                                                                                                    const resetButton = document.querySelector("#reset-button");
-                                                                                                                                      resetButton.disabled = true;
-                                                                                                                                        cells.forEach(cell => {
-                                                                                                                                            cell.textContent = "";
-                                                                                                                                                cell.classList.remove("X", "O");
-                                                                                                                                                  }
-                                                                                                                                                  )
-                                                                                                                                                );
-                                                                                                                                                }
+// Tic Tac Toe Game Logic
 
-btns.forEach((btn, i) => {
-    btn.addEventListener('click', () => ticTacToe(btn, i));
+// Initialize variables
+let currentPlayer = 'X';
+let board = ['', '', '', '', '', '', '', '', ''];
+let gameOver = false;
+
+// Function to check if there's a winner
+function checkWinner() {
+    const winPatterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6] // Diagonals
+    ];
+
+    for (const pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            return board[a];
+        }
+    }
+
+    if (!board.includes('')) {
+        gameOver = true; // It's a draw
+        return 'draw';
+    }
+
+    return null; // No winner yet
+}
+
+// Function to handle a player's move
+function handleMove(cell, index) {
+    if (!gameOver && board[index] === '') {
+        board[index] = currentPlayer;
+        cell.textContent = currentPlayer;
+        
+        const winner = checkWinner();
+        if (winner) {
+            gameOver = true;
+            if (winner === 'draw') {
+                setMessage('It\'s a draw!');
+            } else {
+                setMessage(`Player ${winner} wins!`);
+            }
+        } else {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            setMessage(`Player ${currentPlayer}'s Turn`);
+        }
+    }
+}
+
+// Function to display a message
+function setMessage(message) {
+    document.getElementById('message').textContent = message;
+}
+
+// Event listeners for each cell
+const cells = document.querySelectorAll('.cell');
+cells.forEach((cell, index) => {
+    cell.addEventListener('click', () => {
+        handleMove(cell, index);
+    });
 });
 
-document.querySelector('#reset').addEventListener('click', resetGame);
+// Reset button click event
+document.getElementById('reset-button').addEventListener('click', () => {
+    currentPlayer = 'X';
+    board = ['', '', '', '', '', '', '', '', ''];
+    gameOver = false;
+    setMessage(`Player ${currentPlayer}'s Turn`);
+    cells.forEach(cell => {
+        cell.textContent = '';
+    });
+});
