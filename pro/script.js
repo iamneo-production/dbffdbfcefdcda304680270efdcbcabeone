@@ -43,7 +43,7 @@ function checkWin() {
                                                                         cells[b].textContent === currentPlayer &&
                                                                               cells[c].textContent === currentPlayer
                                                                                   ) {
-                                                                                        endGame(`Player ${ currentPlayer } wins!`);
+                                                                                        endGame("Player ${ currentPlayer } wins!);
                                                                                               break;
                                                                                                   }
                                                                                                     }
@@ -75,4 +75,4 @@ function checkWin() {
                                                                                                                                           cell.textContent = "";
                                                                                                                                               cell.classList.remove("X", "O");
                                                                                                                                                 });
-                                                                                                                                                }
+                                                                                                                                              }
