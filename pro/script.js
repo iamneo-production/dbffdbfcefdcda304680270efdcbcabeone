@@ -75,5 +75,6 @@ function checkWin() {
                                                                                                                                           cell.textContent = "";
                                                                                                                                               cell.classList.remove("X", "O");
                                                                                                                                                 }
-                                                                                                                                                );
-                                                                                                                                              };
+                                                                                                                                                )
+                                                                                                                                              );
+                                                                                                                                              }
